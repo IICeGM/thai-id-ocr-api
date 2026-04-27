@@ -1,0 +1,14 @@
+venv/
+env/
+
+*.pyc
+__pycache__/
+*.pyo
+*pyd
+test_images/
+temp/
+image_scan.jpg
+.env
+
+.vscode/
+.idea/
