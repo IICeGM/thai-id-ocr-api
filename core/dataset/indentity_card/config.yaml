@@ -1,0 +1,57 @@
+roi_extract:
+  front:
+    - name: "Identification_Number"
+      point: [258,38,543,72] # [x1,y1,x2,y2]
+      lang: "eng"
+      provider: "easyocr"
+      blocklist: ""
+    - name: "FullNameThai"
+      point: [165,65,545,110]
+      lang: "tha"
+      provider: "easyocr"
+      blocklist: ""
+    - name: "NameEng"
+      point: [223,105,422,130]
+      lang: "eng"
+      provider: "easyocr"
+      blocklist: ""
+    - name: "LastNameEng"
+      point: [264,134,449,152]
+      lang: "eng"
+      provider: "easyocr"
+      blocklist: ""
+    - name: "BirthdayTh"
+      point: [258,154,406,182]
+      lang: "tha"
+      provider: "easyocr"
+      blocklist: ""
+    - name: "BirthdayEng"
+      point: [295,179,438,207]
+      lang: "eng"
+      provider: "easyocr"
+      blocklist: ""
+    - name: "Religion"
+      point: [240,208,309,233]
+      lang: ["tha","eng"]
+      provider: "easyocr"
+      blocklist: ""
+    - name: "Address"
+      point: [60,220,410,278]
+      lang: "tha"
+      provider: "easyocr"
+      blocklist: ""
+    - name: "DateOfIssueTH"
+      point: [50,275,140,297]
+      lang: "tha"
+      provider: "easyocr"
+      blocklist: ""
+    # - name: "DateOfIssueEN"
+    #   point: [50,313,147,332]
+    #   lang: "eng"
+    #   provider: "easyocr"
+    #   blocklist: ""
+    - name: "DateOfExpireTH"
+      point: [332,275,436,300]
+      lang: "tha"
+      provider: "easyocr"
+      blocklist: ""
