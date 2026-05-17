@@ -1,57 +1,57 @@
 roi_extract:
   front:
     - name: "Identification_Number"
-      point: [258,38,543,72] # [x1,y1,x2,y2]
+      point: [250,32,543,72] # [x1,y1,x2,y2]
       lang: "eng"
       provider: "easyocr"
-      blocklist: ""
+      allowlist: "0123456789 "
     - name: "FullNameThai"
       point: [165,65,545,110]
       lang: "tha"
       provider: "easyocr"
-      blocklist: ""
+      allowlist: "กขฃคฅฆงจฉชซฌญฎฏฐฑฒณดตถทธนบปผฝพฟภมยรลวศษสหฬอฮะัาำิีึืุูเแโใไๅๆ็่้๊๋์ "
     - name: "NameEng"
       point: [223,105,422,130]
       lang: "eng"
       provider: "easyocr"
-      blocklist: ""
+      allowlist: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
     - name: "LastNameEng"
       point: [264,134,449,152]
       lang: "eng"
       provider: "easyocr"
-      blocklist: ""
+      allowlist: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
     - name: "BirthdayTh"
       point: [258,154,406,182]
       lang: "tha"
       provider: "easyocr"
-      blocklist: ""
+      allowlist: "กขฃคฅฆงจฉชซฌญฎฏฐฑฒณดตถทธนบปผฝพฟภมยรลวศษสหฬอฮะัาำิีึืุูเแโใไๅๆ็่้๊๋์0123456789. "
     - name: "BirthdayEng"
       point: [295,179,438,207]
       lang: "eng"
       provider: "easyocr"
-      blocklist: ""
-    - name: "Religion"
-      point: [240,208,309,233]
-      lang: ["tha","eng"]
-      provider: "easyocr"
-      blocklist: ""
+      allowlist: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 "
+    # - name: "Religion"
+    #   point: [240,208,309,233]
+    #   lang: ["tha","eng"]
+    #   provider: "easyocr"
+    #   blocklist: ""
     - name: "Address"
-      point: [60,220,410,278]
+      point: [49,225,454,275]
       lang: "tha"
       provider: "easyocr"
-      blocklist: ""
+      allowlist: "กขฃคฅฆงจฉชซฌญฎฏฐฑฒณดตถทธนบปผฝพฟภมยรลวศษสหฬอฮะัาำิีึืุูเแโใไๅๆ็่้๊๋์0123456789. -/"
     - name: "DateOfIssueTH"
-      point: [50,275,140,297]
+      point: [51, 275, 140, 293]
       lang: "tha"
       provider: "easyocr"
-      blocklist: ""
+      allowlist: "กขฃคฅฆงจฉชซฌญฎฏฐฑฒณดตถทธนบปผฝพฟภมยรลวศษสหฬอฮะัาำิีึืุูเแโใไๅๆ็่้๊๋์0123456789. "
     # - name: "DateOfIssueEN"
     #   point: [50,313,147,332]
     #   lang: "eng"
     #   provider: "easyocr"
     #   blocklist: ""
     - name: "DateOfExpireTH"
-      point: [332,275,436,300]
+      point: [329, 270, 426, 294]
       lang: "tha"
       provider: "easyocr"
-      blocklist: ""
+      allowlist: "กขฃคฅฆงจฉชซฌญฎฏฐฑฒณดตถทธนบปผฝพฟภมยรลวศษสหฬอฮะัาำิีึืุูเแโใไๅๆ็่้๊๋์0123456789. "

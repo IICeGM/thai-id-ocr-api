@@ -1,32 +1,10 @@
-# import easyocr
-# from image_utils import preprocess_image
-# from thai_extractor import extract_thai_id_info
-
-# class OCREngine:
-#     def __init__(self):
-#         # Initialize with Thai and English
-#         self.reader = easyocr.Reader(['th', 'en'])
-
-#     def process_id_card(self, image_path):
-#         # 1. Pre-process (Crop/Rotate/Perspective)
-#         processed_img = preprocess_image(image_path)
-        
-#         # 2. OCR Read with detailed output (boxes, text, confidence)
-#         detailed_results = self.reader.readtext(processed_img)
-        
-#         # detailed_results format: [([[x,y],[x,y],[x,y],[x,y]], "text", confidence), ...]
-        
-#         # 3. Extract Data using detailed spatial info
-#         info = extract_thai_id_info(detailed_results)
-        
-#         return info
-
 import os
 import cv2
 import yaml 
 import numpy as np
 import easyocr
 import base64
+import shutil
 from pathlib import Path
 from collections import namedtuple
 from core.utils import Language, Provider, Card, remove_dot_noise
@@ -69,6 +47,15 @@ class PersonalCard:
             self.config = yaml.safe_load(f)
     
     def extract_front_info(self,image_bytes):
+        debug_folder = os.path.join(self.root_path, 'debugImage')
+        
+        # ถ้ามีโฟลเดอร์เก่าอยู่แล้ว ให้ลบทิ้งทั้งโฟลเดอร์ (เคลียร์รูปเก่า)
+        if os.path.exists(debug_folder):
+            shutil.rmtree(debug_folder)
+        
+        # สร้างโฟลเดอร์ debugImage ขึ้นมาใหม่ให้พร้อมใช้งาน
+        os.makedirs(debug_folder, exist_ok=True)
+
         # แปลงข้อมูลไฟล์ภาพที่รับมาแบบ Bytes ให้กลายเป็นเมทริกซ์ภาพของ OpenCV
         nparr = np.frombuffer(image_bytes,np.uint8)
         img = cv2.imdecode(nparr,cv2.IMREAD_COLOR)
@@ -97,17 +84,34 @@ class PersonalCard:
             x1,y1,x2,y2 = roi["point"]
             # ตัดภาพ (Crop) ตามพิกัด [y1:y2, x1:x2]
             crop = aligned_img[y1:y2,x1:x2]
-
+            # เซฟรูปภาพที่ตัดแล้วออกมาดู
+            debug_img = cv2.cvtColor(crop, cv2.COLOR_RGB2BGR)
+            save_path = os.path.join(debug_folder, f"debug_crop_{roi['name']}.jpg")
+            cv2.imwrite(save_path, debug_img)
+            
             # แปลงภาพที่ตัดมาเป็นขาวดำ (Grayscale) เพื่อให้ EasyOCR อ่านตัวหนังสือได้แม่นยำขึ้น
             crop_gray = cv2.cvtColor(crop,cv2.COLOR_RGB2GRAY)
-            text = self.reader.readtext(crop_gray, detail=0, paragraph=False) 
-            # นำภาพไปลบจุดรบกวนก่อนส่งให้ OCR
-            crop_clean = remove_dot_noise(crop_gray)
-            text = self.reader.readtext(crop_clean, detail=0, paragraph=False) 
-            # text = ['นาย', 'สมชาย', 'ใจดี']  
-            extracted_text =  " ".join(text).strip() #"นาย สมชาย ใจดี"
-
             
+            #  1. ใส่แว่นขยาย: ขยายภาพให้ใหญ่ขึ้น 3 เท่าด้วย INTER_CUBIC เพื่อลดการแตกของพิกเซล
+            crop_resized = cv2.resize(crop_gray, None, fx=3, fy=3, interpolation=cv2.INTER_CUBIC)
+            
+            #  2. นำภาพ "ที่ขยายแล้ว" ไปลบจุดรบกวนก่อนส่งให้ OCR
+            crop_clean = remove_dot_noise(crop_resized)
+            
+            blocklist_chars = roi.get("blocklist", "")
+            allowlist_chars = roi.get("allowlist", "")
+            
+            kwargs = {"detail": 0, "paragraph": False}
+            if blocklist_chars:
+                kwargs["blocklist"] = blocklist_chars
+            if allowlist_chars:
+                kwargs["allowlist"] = allowlist_chars
+                
+            # ส่งภาพใหญ่เนียนๆ เข้า EasyOCR
+            text = self.reader.readtext(crop_clean, **kwargs) 
+            
+            extracted_text =  " ".join(text).strip()
+
             if roi['name'] == "FullNameThai" and extracted_text:
                 # เเยกคำด้วยช่องว่าง
                 parts = extracted_text.split()
@@ -120,4 +124,4 @@ class PersonalCard:
             else:
                 results[roi["name"]] = extracted_text
  
-        return results 
+        return results
