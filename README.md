@@ -85,6 +85,19 @@ main:app คือการชี้ไปที่ตัวแปร app ใน
 สัดส่วนภาพที่เหมาะสม: แม้ระบบจะมี SIFT ช่วยดัดภาพ แต่ควรเลือกรูปที่ถ่ายหน้าตรง หรือเอียงเพียงเล็กน้อย และเห็นขอบบัตรครบทั้ง 4 ด้าน เพื่อให้โมเดลสามารถคำนวณสัดส่วนเทียบกับ Template ได้อย่างสมบูรณ์
 
 ************ ตัวอย่างผลลัพธ์ที่ได้ **************
-<img width="715" height="331" alt="image" src="https://github.com/user-attachments/assets/7e5cfd99-ec76-43d6-b76c-75c1008e25a5" />
-
-
+{
+  "status": "success",
+  "data": {
+    "Identification_Number": "1 2345 67890 12 3",
+    "PrefixTH": "นาย",
+    "NameTH": "คามาโดะ",
+    "LastNameTH": "ทันจิโร่",
+    "NameEng": "mr tanjiro",
+    "LastNameEng": "kamado",
+    "BirthdayTh": "14 ก.ค. 2533",
+    "BirthdayEng": "14 jul  1990",
+    "Address": "4 ทีอบู่ 112/5 หมู่ 6 บ้านทุ่งมังกร ต.ศรีมหาโพธิ อ.เมือง จ.ปราจีนบรี 25000",
+    "DateOfIssueTH": "25 ก.พ. 2566",
+    "DateOfExpireTH": "25 ก.1. 2576"
+  }
+}
